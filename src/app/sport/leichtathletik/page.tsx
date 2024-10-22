@@ -57,7 +57,7 @@ export default function BasketballPage() {
       <div className="grid md:grid-cols-2 gap-8 mb-12">
         <div>
           <Image
-            src="/img/idk/la foto.jpg"
+            src="/img/sports/leichtathletik/cover.jpg"
             alt="Leichtathletik-Team des SV Schloßberg"
             width={600}
             height={400}
@@ -117,7 +117,7 @@ export default function BasketballPage() {
           <CardContent>
             <div className="flex items-center space-x-4">
               <Image
-                src="/img/La/Andi S.jpg"
+                src="/img/persons/andi.jpg"
                 alt="Max Mustermann"
                 width={80}
                 height={80}

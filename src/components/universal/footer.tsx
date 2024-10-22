@@ -43,20 +43,20 @@ export function Footer() {
             <h3 className="text-xl font-bold mb-4">Folgen Sie uns</h3>
             <div className="flex space-x-4">
               <Link
-                href="#"
+                href="https://www.facebook.com/SVSchlossbergHerren/?locale=de_DE"
                 className="hover:text-[#a3d9a3] transition-colors duration-300"
               >
                 <Facebook size={24} />
               </Link>
               <Link
-                href="#"
+                href="https://www.instagram.com/svs_leichtathletik/"
                 className="hover:text-[#a3d9a3] transition-colors duration-300"
               >
                 <Instagram size={24} />
               </Link>
               <Link
                 href="#"
-                className="hover:text-[#a3d9a3] transition-colors duration-300"
+                className="hover:text-[#a3d9a3] transition-colors duration-300 hidden"
               >
                 <Twitter size={24} />
               </Link>

@@ -1,5 +1,3 @@
-import { SportsCarousel } from "@/components/home/carousel";
-import { Welcome } from "@/components/home/welcome";
 import { Sponsors } from "@/components/home/sponsors";
 import { Hero } from "@/components/home/hero";
 import { Features } from "@/components/home/features";

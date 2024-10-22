@@ -28,6 +28,51 @@ export function SportsCarousel() {
               alt: "Gymnastik",
               sport: "Gymnastik",
             },
+            {
+              src: "/img/sports/eisstock.jpg",
+              alt: "Eisstock",
+              sport: "Eisstock",
+            },
+            {
+              src: "/img/sports/funsportskaterwelle.jpg",
+              alt: "funsportskaterwelle",
+              sport: "Skaterpark(Funsport)",
+            },
+            {
+              src: "/img/sports/icehockey.jpg",
+              alt: "Eishockey",
+              sport: "Eishockey",
+            },
+            {
+              src: "/img/sports/jugendfussball.jpg",
+              alt: "Jugendfussball",
+              sport: "Jugendfussball",
+            },
+            {
+              src: "/img/sports/leichtathletik.jpg",
+              alt: "Leichtathletik",
+              sport: "Leichtathletik",
+            },
+            {
+              src: "/img/sports/ski.jpg",
+              alt: "Ski",
+              sport: "Ski",
+            },
+            {
+              src: "/img/sports/tennis.jpg",
+              alt: "Tennis",
+              sport: "Tennis",
+            },
+            {
+              src: "/img/sports/tischtennis.jpg",
+              alt: "Tischtennis",
+              sport: "Tischtennis",
+            },
+            {
+              src: "/img/sports/turnen.jpg",
+              alt: "Turnen",
+              sport: "Turnen",
+            },
           ].map((image, index) => (
             <CarouselItem
               key={index}

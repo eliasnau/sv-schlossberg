@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import Image from "next/image";
 import { Calendar, Clock, Mail, Phone, MapPin, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,34 +14,35 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const Tooltip = ({ text, children }) => {
-    const [visible, setVisible] = useState(false);
-  
-    const handleMouseEnter = () => setVisible(true);
-    const handleMouseLeave = () => setVisible(false);
-  
-    return (
-      <span 
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="relative inline-block"
-      >
-        {children}
-        {visible && (
-          <div 
-            className="absolute bg-black text-white text-sm rounded p-1 -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap"
-            style={{ pointerEvents: 'none' }} // Verhindert, dass der Tooltip markiert werden kann
-          >
-            {text}
-          </div>
-        )}
-      </span>
-    );
-  };
-  
-  
-  
-  
+type TooltipProps = {
+  text: string;
+  children: ReactNode;
+};
+
+const Tooltip = ({ text, children }: TooltipProps) => {
+  const [visible, setVisible] = useState(false);
+
+  const handleMouseEnter = () => setVisible(true);
+  const handleMouseLeave = () => setVisible(false);
+
+  return (
+    <span
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative inline-block"
+    >
+      {children}
+      {visible && (
+        <div
+          className="absolute bg-black text-white text-sm rounded p-1 -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap"
+          style={{ pointerEvents: "none" }} // Verhindert, dass der Tooltip markiert werden kann
+        >
+          {text}
+        </div>
+      )}
+    </span>
+  );
+};
 
 export default function BasketballPage() {
   const [isAktuellesOpen, setIsAktuellesOpen] = useState(false);

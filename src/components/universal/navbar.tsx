@@ -24,8 +24,11 @@ export function Navbar() {
 
   // Schließen des Menüs, wenn außerhalb geklickt wird
   React.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isMenuOpen && !event.target.closest(".dropdown-menu")) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isMenuOpen &&
+        !(event.target as HTMLElement).closest(".dropdown-menu")
+      ) {
         setMenuOpen(false);
       }
     };

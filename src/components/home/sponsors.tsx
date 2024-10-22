@@ -1,5 +1,33 @@
 import Image from "next/image";
 
+const sponsors = [
+  {
+    src: "/img/sponsoren/GoGlasW.jpg",
+    alt: "GoGlas",
+    link: "https://www.go-glas.de/",
+  },
+  {
+    src: "/img/sponsoren/heilmaierW.png",
+    alt: "Heilmaier",
+    link: "https://www.heilmaier-projektbau.de/", /*** Der link geht nicht. Unbeding nachfragen was wir machen. (Alle links sind von der svs website). */
+  },
+  {
+    src: "/img/sponsoren/NiedermayrW.png",
+    alt: "Niedermayr",
+    link: "https://www.niedermayr-autoglas.de/",
+  },
+  {
+    src: "/img/sponsoren/OrthoW.png",
+    alt: "Ortho",
+    link: "https://www.orthozentrum.net/",
+  },
+  {
+    src: "/img/sponsoren/ReweW.png",
+    alt: "Rewe",
+    link: "https://www.rewe.de/marktseite/stephanskirchen/865846/rewe-markt-habichtstr-3/",
+  },
+];
+
 export function Sponsors() {
   return (
     <section className="bg-[#e0ebe0] py-12">
@@ -8,18 +36,20 @@ export function Sponsors() {
           Unsere Sponsoren
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[1, 2, 3, 4].map((sponsor) => (
+          {sponsors.map((sponsor, index) => (
             <div
-              key={sponsor}
-              className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+              key={index}
+              className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-center items-center"
             >
-              <Image
-                src="/placeholder.svg?height=100&width=200"
-                alt={`Sponsor ${sponsor}`}
-                width={200}
-                height={100}
-                className="w-full"
-              />
+              <a href={sponsor.link} target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={sponsor.src}
+                  alt={sponsor.alt}
+                  width={200} // Remove these or adjust as needed
+                  height={100} // Remove these or adjust as needed
+                  className="object-contain max-w-full max-h-full"
+                />
+              </a>
             </div>
           ))}
         </div>

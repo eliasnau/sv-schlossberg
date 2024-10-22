@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +12,6 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { SproutIcon, Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
 import * as React from "react";
 import { motion } from "framer-motion"; // Framer Motion import
 
@@ -20,20 +19,20 @@ export function Navbar() {
   const [isMenuOpen, setMenuOpen] = React.useState(false);
 
   const toggleMenu = () => {
-    setMenuOpen(prev => !prev);
+    setMenuOpen((prev) => !prev);
   };
 
   // Schließen des Menüs, wenn außerhalb geklickt wird
   React.useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isMenuOpen && !event.target.closest('.dropdown-menu')) {
+      if (isMenuOpen && !event.target.closest(".dropdown-menu")) {
         setMenuOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
 
@@ -116,28 +115,40 @@ export function Navbar() {
               <ul className="flex flex-col w-full">
                 <li>
                   <NavigationMenuLink asChild>
-                    <Link href="/" className={`${navigationMenuTriggerStyle()} text-center w-full`}>
+                    <Link
+                      href="/"
+                      className={`${navigationMenuTriggerStyle()} text-center w-full`}
+                    >
                       Sportarten
                     </Link>
                   </NavigationMenuLink>
                 </li>
                 <li>
                   <NavigationMenuLink asChild>
-                    <Link href="/verein" className={`${navigationMenuTriggerStyle()} text-center w-full`}>
+                    <Link
+                      href="/verein"
+                      className={`${navigationMenuTriggerStyle()} text-center w-full`}
+                    >
                       Verein
                     </Link>
                   </NavigationMenuLink>
                 </li>
                 <li>
                   <NavigationMenuLink asChild>
-                    <Link href="/kontakt" className={`${navigationMenuTriggerStyle()} text-center w-full`}>
+                    <Link
+                      href="/kontakt"
+                      className={`${navigationMenuTriggerStyle()} text-center w-full`}
+                    >
                       Kontakt
                     </Link>
                   </NavigationMenuLink>
                 </li>
                 <li>
                   <NavigationMenuLink asChild>
-                    <Link href="/docs" className={`${navigationMenuTriggerStyle()} text-center w-full`}>
+                    <Link
+                      href="/docs"
+                      className={`${navigationMenuTriggerStyle()} text-center w-full`}
+                    >
                       Sponsoren
                     </Link>
                   </NavigationMenuLink>

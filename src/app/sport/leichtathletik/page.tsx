@@ -68,8 +68,8 @@ export default function BasketballPage() {
           <h2 className="text-2xl font-semibold mb-4">
             Über unsere Leichtathletik-Abteilung
           </h2>
-          <p className="mb-4">Das schreib ich nciht um</p>
-          <p>Same</p>
+          <p className="mb-4">Die Leichtathletik-Abteilung des SV Schloßberg bietet ein vielseitiges Training für alle Altersgruppen. Von Laufen über Springen bis hin zum Werfen decken wir alle Disziplinen ab. Unser engagiertes Trainerteam fördert sowohl Breitensport als auch ambitionierte Wettkampfathleten.</p>
+          <p>Wir legen großen Wert auf eine fundierte technische Ausbildung und die Entwicklung von Ausdauer, Kraft und Koordination. Regelmäßige Teilnahmen an regionalen und überregionalen Wettkämpfen gehören ebenso zu unserem Programm wie gemeinsame Ausflüge und Trainingslager.</p>
         </div>
       </div>
 

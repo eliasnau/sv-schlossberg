@@ -135,7 +135,9 @@ export function Navbar() {
         {/* Desktop buttons for Login and Probetermin */}
         <div className="hidden lg:flex lg:space-x-4 ml-8">
           <Button className="bg-white text-[#1a5f1a]">Login</Button>
-          <Button className="bg-[#ffcc00] text-[#1a5f1a]">Probetermin</Button>
+          <Link href="/probetermin">
+            <Button className="bg-[#ffcc00] text-[#1a5f1a]">Probetermin</Button>
+          </Link>
         </div>
 
         {/* Hamburger menu for mobile view */}

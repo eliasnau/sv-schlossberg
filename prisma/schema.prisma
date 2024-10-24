@@ -1,0 +1,107 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ROLE {
+  USER
+  ADMIN
+}
+
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  role           ROLE           @default(USER)
+  
+  profilePicture String?
+ 
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+
+model Sport {
+  id             String          @id @default(cuid())
+  name           String
+  description    String?
+  trainingTimes  TrainingTime[]   
+  trainingPlans  TrainingPlan[]   
+  persons        Person[]         
+}
+
+model TrainingTime {
+  id             String          @id @default(cuid())
+  day            String
+  startTime      String
+  endTime        String
+  sport          Sport            @relation(fields: [sportId], references: [id])
+  sportId        String
+  trainingPlan   TrainingPlan?    @relation(fields: [trainingPlanId], references: [id]) 
+  trainingPlanId String?
+}
+
+model TrainingPlan {
+  id             String          @id @default(cuid())
+  day            String
+  sport          Sport            @relation(fields: [sportId], references: [id])
+  sportId        String
+  trainingTimes  TrainingTime[]
+}
+
+model Person {
+  id             String          @id @default(cuid())
+  name           String
+  image          String?
+  sport          Sport            @relation(fields: [sportId], references: [id])
+  sportId        String
+}

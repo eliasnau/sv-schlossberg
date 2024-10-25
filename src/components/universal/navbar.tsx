@@ -16,6 +16,7 @@ import * as React from "react";
 import { motion } from "framer-motion"; // Framer Motion import
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import UserButton from "../user-button";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -134,10 +135,17 @@ export function Navbar() {
 
         {/* Desktop buttons for Login and Probetermin */}
         <div className="hidden lg:flex lg:space-x-4 ml-8">
-          <Button className="bg-white text-[#1a5f1a]">Login</Button>
-          <Link href="/probetermin">
-            <Button className="bg-[#ffcc00] text-[#1a5f1a]">Probetermin</Button>
-          </Link>
+          <>
+            <Button className="bg-white text-[#1a5f1a]">Login</Button>
+            <Link href="/probetermin">
+              <Button className="bg-[#ffcc00] text-[#1a5f1a]">
+                Probetermin
+              </Button>
+            </Link>
+          </>
+          <>
+            <UserButton />
+          </>
         </div>
 
         {/* Hamburger menu for mobile view */}

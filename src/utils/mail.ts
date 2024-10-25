@@ -14,12 +14,10 @@ export async function passwordResetMail(
 }
 
 export async function sendVerificationEmail(email: string, token: string) {
-  console.log("snding verification");
   const html = await verifyEmail(token);
   await sendMail(email, "SvS Passwort Zurücksetzen", "", html).catch((e) => {
     console.log(e);
   });
-  console.log("verification sent");
 }
 
 export async function sendPasswordResetEmail(email: string, token: string) {

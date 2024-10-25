@@ -19,7 +19,7 @@ export async function sendMail(
 ) {
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: "Codity Development <noreply@codity.dev>", // sender address
+    from: "Codity Development <noreply@dev.codity.net>", // sender address
     to: receivers, // list of receivers
     subject: subject, // Subject line
     text: text, // plain text body

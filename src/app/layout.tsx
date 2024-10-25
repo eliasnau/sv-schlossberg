@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Footer } from "@/components/universal/footer";
 import { Navbar } from "@/components/universal/navbar";
+import { ToastProvider } from "@/components/providers/toaster-provider";
 // import "@uploadthing/react/styles.css";
 
 const geistSans = localFont({
@@ -31,11 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex flex-col min-h-screen bg-[#f0f4f0]">
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-        </div>
+        <ToastProvider>
+          <div className="flex flex-col min-h-screen bg-[#f0f4f0]">
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
+        </ToastProvider>
       </body>
     </html>
   );

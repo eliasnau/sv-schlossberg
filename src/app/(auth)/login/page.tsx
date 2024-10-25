@@ -46,15 +46,16 @@ export default function Page() {
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
-      login(values).then((data) => {
-        if (data?.error) {
-          toast.error(data.error);
-        }
-        if (data?.success) {
-          toast.success(data.success);
+      toast.promise(login(values), {
+        loading: "Logging in...",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        success: (data: any) => {
           form.reset({ email: "", password: "" });
           window.location.href = "/";
-        }
+          return data?.success || "Logged in successfully!";
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        error: (err: any) => err?.message || "Login failed",
       });
     });
   };

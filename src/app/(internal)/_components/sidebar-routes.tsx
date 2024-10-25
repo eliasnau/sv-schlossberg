@@ -4,7 +4,6 @@ import {
   BarChart,
   ClipboardList,
   FolderClosed,
-  Globe,
   Layout,
   Table,
   Trophy,

@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable */
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,35 @@ import {
 import { CompetitionForm } from "./competition-form";
 import { CompetitionItem } from "./competition-item";
 
-export function Competitions({ sport, setSport }) {
-  const [newCompetition, setNewCompetition] = useState({
+interface Group {
+  id: string;
+  name: string;
+}
+
+interface Competition {
+  id: string;
+  name: string;
+  date: string; // ISO string format
+  description: string;
+  image?: string; // Optional for image upload
+  groups: string[]; // Array of group IDs
+}
+
+interface Sport {
+  id: string;
+  name: string;
+  competitions: Competition[];
+  groups: Group[];
+}
+
+interface CompetitionsProps {
+  sport: Sport;
+  setSport: (sport: Sport) => void;
+}
+
+export function Competitions({ sport, setSport }: CompetitionsProps) {
+  const [newCompetition, setNewCompetition] = useState<Competition>({
+    id: "", // Temporary ID for new competitions
     name: "",
     date: "",
     description: "",
@@ -23,15 +50,16 @@ export function Competitions({ sport, setSport }) {
     image: "",
   });
 
-  const handleAddCompetition = (competition) => {
+  const handleAddCompetition = (competition: Competition) => {
     setSport({
       ...sport,
       competitions: [
         ...sport.competitions,
-        { ...competition, id: Date.now().toString() },
+        { ...competition, id: Date.now().toString() }, // Ensure unique ID
       ],
     });
     setNewCompetition({
+      id: "", // Reset ID
       name: "",
       date: "",
       description: "",
@@ -40,7 +68,7 @@ export function Competitions({ sport, setSport }) {
     });
   };
 
-  const handleUpdateCompetition = (updatedCompetition) => {
+  const handleUpdateCompetition = (updatedCompetition: Competition) => {
     const updatedCompetitions = sport.competitions.map((comp) =>
       comp.id === updatedCompetition.id ? updatedCompetition : comp
     );
@@ -84,7 +112,7 @@ export function Competitions({ sport, setSport }) {
             <CompetitionForm
               competition={newCompetition}
               groups={sport.groups}
-              onSave={handleAddCompetition}
+              onSave={handleAddCompetition} // Pass the add function
             />
           </DialogContent>
         </Dialog>

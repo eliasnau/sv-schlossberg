@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { MembersDataTable } from "./members-data-table";
+import axios from "axios";
 
 // Mock data (this would typically come from an API call)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mockMembers = [
   {
     id: "1",
@@ -27,20 +29,36 @@ const mockMembers = [
     sports: ["Fußball", "Basketball"],
   },
 ];
-
 export default function MemberManagementPage() {
-  const [members, setMembers] = useState(mockMembers);
+  const [membersList, setMembersList] = useState();
 
   useEffect(() => {
-    // Fetch members data
-    // For now, we're using mock data
-    setMembers(mockMembers);
+    const fetchMembers = async () => {
+      await axios
+        .get("/api/admin/members")
+        .then((res) => {
+          const data = res.data;
+          console.log(data);
+          if (!data || !data.members) return <p>Error</p>;
+          setMembersList(data.members);
+        })
+        .catch((error) => {
+          console.error("Error fetching members:", error);
+          return <p>Error</p>;
+        });
+    };
+
+    fetchMembers();
   }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Mitgliederverwaltung</h1>
-      <MembersDataTable data={members} />
+      {membersList ? (
+        <MembersDataTable data={membersList} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }

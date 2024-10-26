@@ -1,45 +1,77 @@
 "use client";
-
-import { useState } from "react";
+/* eslint-disable */
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import axios from "axios";
 
-export function MemberEditForm({ member, sports, groups, onSave }) {
-  const [editedMember, setEditedMember] = useState(member);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+// Define types for the props
+interface Member {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+  bio: string;
+  image: string;
+  sports: string[];
+  groups: string[];
+}
 
-  const handleChange = (e) => {
+interface Sport {
+  id: string;
+  name: string;
+}
+
+interface Group {
+  id: string;
+  name: string;
+}
+
+interface MemberEditFormProps {
+  member: Member;
+  sports: Sport[];
+  groups: Group[];
+  onSave: (member: Member) => Promise<void>;
+}
+
+export function MemberEditForm({
+  member,
+  groups,
+  onSave,
+}: MemberEditFormProps) {
+  const [editedMember, setEditedMember] = useState<Member>(member);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  useEffect(() => {}, []);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setEditedMember({ ...editedMember, [name]: value });
   };
 
-  const handleSportChange = (sportId) => {
-    const updatedSports = editedMember.sports.includes(sportId)
+  const handleSportChange = (sportId: string) => {
+    const updatedSports = editedMember.groups.includes(sportId)
       ? editedMember.sports.filter((id) => id !== sportId)
       : [...editedMember.sports, sportId];
     setEditedMember({ ...editedMember, sports: updatedSports });
   };
 
-  const handleGroupChange = (groupId) => {
+  const handleGroupChange = (groupId: string) => {
     const updatedGroups = editedMember.groups.includes(groupId)
       ? editedMember.groups.filter((id) => id !== groupId)
       : [...editedMember.groups, groupId];
     setEditedMember({ ...editedMember, groups: updatedGroups });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     await onSave(editedMember);
@@ -123,19 +155,6 @@ export function MemberEditForm({ member, sports, groups, onSave }) {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Sportarten</h3>
-                  {sports.map((sport) => (
-                    <div key={sport.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`sport-${sport.id}`}
-                        checked={editedMember.sports.includes(sport.id)}
-                        onCheckedChange={() => handleSportChange(sport.id)}
-                      />
-                      <Label htmlFor={`sport-${sport.id}`}>{sport.name}</Label>
-                    </div>
-                  ))}
-                </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Gruppen</h3>
                   {groups.map((group) => (

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,8 +5,33 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export function CompetitionForm({ competition, groups, onSave }) {
-  const [updatedCompetition, setUpdatedCompetition] = useState(competition);
+interface Group {
+  id: string;
+  name: string;
+}
+
+interface Competition {
+  id: string; // Make sure to include this in your Competition interface
+  name: string;
+  date: string;
+  description: string;
+  image?: string;
+  groups: string[];
+}
+
+interface CompetitionFormProps {
+  competition: Competition;
+  groups: Group[];
+  onSave: (competition: Competition) => void; // Ensure this signature matches
+}
+
+export function CompetitionForm({
+  competition,
+  groups,
+  onSave,
+}: CompetitionFormProps) {
+  const [updatedCompetition, setUpdatedCompetition] =
+    useState<Competition>(competition);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,7 +58,7 @@ export function CompetitionForm({ competition, groups, onSave }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(updatedCompetition);
+    onSave(updatedCompetition); // Ensure this sends the complete object
   };
 
   return (
@@ -85,7 +108,7 @@ export function CompetitionForm({ competition, groups, onSave }) {
               <Checkbox
                 id={`group-${group.id}`}
                 checked={updatedCompetition.groups.includes(group.id)}
-                onCheckedChange={(checked) =>
+                onCheckedChange={(checked: boolean) =>
                   handleGroupChange(group.id, checked)
                 }
               />

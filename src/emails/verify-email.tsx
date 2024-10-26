@@ -22,7 +22,7 @@ export const LinkEmail = ({ token }: LinkEmailProps) => (
       <Container style={container}>
         <Heading style={h1}>Login</Heading>
         <Link
-          href={`${process.env.APP_URL}/verify-email?token=${token}`}
+          href={`${process.env.APP_URL}/new-verification?token=${token}`}
           target="_blank"
           style={{
             ...link,

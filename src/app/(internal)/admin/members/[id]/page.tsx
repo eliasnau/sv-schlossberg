@@ -1,13 +1,36 @@
 "use client";
-
+/* eslint-disable */
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { MemberEditForm } from "./member-edit-form";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import axios from "axios";
+
+// Define types for member, sport, and group
+interface Member {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+  bio: string;
+  image: string;
+  sports: string[];
+  groups: string[];
+}
+
+interface Sport {
+  id: string;
+  name: string;
+}
+
+interface Group {
+  id: string;
+  name: string;
+}
 
 // Mock data (this would typically come from an API call)
-const mockMember = {
+const mockMember: Member = {
   id: "1",
   name: "Max Mustermann",
   email: "max.mustermann@example.com",
@@ -18,38 +41,64 @@ const mockMember = {
   groups: ["1"],
 };
 
-const mockSports = [
+const mockSports: Sport[] = [
   { id: "1", name: "Fußball" },
   { id: "2", name: "Volleyball" },
   { id: "3", name: "Basketball" },
 ];
 
-const mockGroups = [
+const mockGroups: Group[] = [
   { id: "1", name: "Erwachsene Fußball" },
   { id: "2", name: "Erwachsene Volleyball" },
   { id: "3", name: "Jugend Basketball" },
 ];
 
-export default function EditMemberPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [member, setMember] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+export default function EditMemberPage({ params }: { params: { id: string } }) {
+  const [member, setMember] = useState<Member | null>(null);
+  const [groups, setGroups] = useState<Group[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Fetch member data based on params.id
-    // For now, we'll use mock data
-    setMember({ ...mockMember, id: params.id });
+    const fetchMembers = async () => {
+      await axios
+        .get(`/api/admin/members/${params.id}`)
+        .then((res) => {
+          const data = res.data;
+          console.log(data);
+          if (!data || !data.member) return <p>Error</p>;
+          setMember(data.member);
+        })
+        .catch((error) => {
+          console.error("Error fetching members:", error);
+          return <p>Error</p>;
+        });
+    };
+    fetchMembers();
+    const fetchSports = async () => {
+      await axios
+        .get(`/api/admin/groups`)
+        .then((res) => {
+          const data = res.data;
+          console.log(data);
+          if (!data || !data.groups) return <p>Error</p>;
+          setGroups(data.groups);
+        })
+        .catch((error) => {
+          console.error("Error fetching members:", error);
+          return <p>Error</p>;
+        });
+    };
+    fetchSports();
     setIsLoading(false);
-  }, [params.id]);
+  }, []);
 
-  const handleSave = async (updatedMember) => {
+  const handleSave = async (updatedMember: Member) => {
     // Here you would typically send the updated member data to your API
     console.log("Saving updated member:", updatedMember);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
     // After successful save, redirect to the members list
-    router.push("/admin/members");
+    //router.push("/admin/members");
   };
 
   if (isLoading) {
@@ -64,7 +113,7 @@ export default function EditMemberPage() {
     <div className="container mx-auto px-4 py-8">
       <Button
         variant="ghost"
-        onClick={() => router.push("/admin/members")}
+        onClick={() => {}} //router.push("/admin/members")}
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Zurück zur Mitgliederliste
@@ -75,7 +124,7 @@ export default function EditMemberPage() {
       <MemberEditForm
         member={member}
         sports={mockSports}
-        groups={mockGroups}
+        groups={groups}
         onSave={handleSave}
       />
     </div>

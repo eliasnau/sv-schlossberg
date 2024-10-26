@@ -1,37 +1,73 @@
 "use client";
+/* eslint-disable */
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { GroupForm } from "./group-form";
 import { GroupItem } from "./group-item";
+import {
+  AgeGroup as PrismaAgeGroup,
+  TrainingPlan,
+  TrainingTime,
+} from "@prisma/client"; // Importing AgeGroup from Prisma
 
-export function AgeGroups({ sport, setSport }) {
-  const [newGroup, setNewGroup] = useState({
+// Define the AgeGroup type with additional properties
+export interface AgeGroup extends PrismaAgeGroup {
+  trainingTimes: TrainingTime[]; // Adjust these types based on your structure
+  trainingPlans: TrainingPlan[];
+}
+
+interface Sport {
+  id: string; // Assuming Sport has an id
+  name: string; // Assuming Sport has a name
+  description?: string; // Optional description
+  groups: AgeGroup[];
+}
+
+interface AgeGroupsProps {
+  sport: Sport;
+  setSport: (sport: Sport) => void;
+}
+
+export function AgeGroups({ sport, setSport }: AgeGroupsProps) {
+  const [newGroup, setNewGroup] = useState<AgeGroup>({
+    id: "",
     name: "",
     description: "",
-    image: "",
+    image: null, // Initialize as null if optional
+    trainingTimes: [], // Initialize as an empty array
+    trainingPlans: [], // Initialize as an empty array
+    sportId: sport.id, // Automatically associate the new group with the sport
   });
 
   const handleAddGroup = () => {
+    if (!newGroup.name) return; // Prevent adding empty group
+
     setSport({
       ...sport,
       groups: [
         ...sport.groups,
         {
           ...newGroup,
-          id: Date.now().toString(),
-          trainingTimes: [],
-          trainingPlans: [],
+          id: Date.now().toString(), // Generate a unique ID
         },
       ],
     });
-    setNewGroup({ name: "", description: "", image: "" });
+    // Reset the new group state
+    setNewGroup({
+      id: "",
+      name: "",
+      description: "",
+      image: null,
+      trainingTimes: [],
+      trainingPlans: [],
+      sportId: sport.id,
+    });
   };
 
-  const handleUpdateGroup = (updatedGroup) => {
+  const handleUpdateGroup = (updatedGroup: AgeGroup) => {
     const updatedGroups = sport.groups.map((group) =>
       group.id === updatedGroup.id ? updatedGroup : group
     );

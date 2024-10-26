@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -13,13 +12,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+/* eslint-disable */
 
-export function TrainingPlanForm({ trainingPlans, onUpdate }) {
-  const [newPlan, setNewPlan] = useState({ date: "", description: "" });
+// Define the TrainingPlan interface
+interface TrainingPlan {
+  id: string; // Unique identifier for each plan
+  date: string; // Date of the training
+  description: string; // Description of the training
+}
+
+// Define the props for TrainingPlanForm
+interface TrainingPlanFormProps {
+  trainingPlans: TrainingPlan[];
+  onUpdate: (trainingPlans: TrainingPlan[]) => void;
+}
+
+export function TrainingPlanForm({
+  trainingPlans,
+  onUpdate,
+}: TrainingPlanFormProps) {
+  const [newPlan, setNewPlan] = useState<TrainingPlan>({
+    date: "",
+    description: "",
+    id: "",
+  });
 
   const handleAddPlan = () => {
-    onUpdate([...trainingPlans, { ...newPlan, id: Date.now().toString() }]);
-    setNewPlan({ date: "", description: "" });
+    const newTrainingPlan: TrainingPlan = {
+      ...newPlan,
+      id: Date.now().toString(),
+    };
+    onUpdate([...trainingPlans, newTrainingPlan]);
+    setNewPlan({ date: "", description: "", id: "" });
   };
 
   const handleRemovePlan = (id: string) => {
@@ -58,12 +82,18 @@ export function TrainingPlanForm({ trainingPlans, onUpdate }) {
         <Input
           type="date"
           value={newPlan.date}
-          onChange={(e) => setNewPlan({ ...newPlan, date: e.target.value })}
+          onChange={(e) =>
+            setNewPlan({ ...newPlan, date: e.target.value, id: newPlan.id })
+          }
         />
         <Input
           value={newPlan.description}
           onChange={(e) =>
-            setNewPlan({ ...newPlan, description: e.target.value })
+            setNewPlan({
+              ...newPlan,
+              description: e.target.value,
+              id: newPlan.id,
+            })
           }
           placeholder="Beschreibung"
         />

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -20,6 +19,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+/* eslint-disable */
+
+// Define the TrainingTime interface
+interface TrainingTime {
+  id: string; // Unique identifier for the training time
+  day: string; // Day of the week
+  startTime: string; // Start time in HH:MM format
+  endTime: string; // End time in HH:MM format
+}
+
+// Define the props for TrainingTimeForm
+interface TrainingTimeFormProps {
+  trainingTimes: TrainingTime[];
+  onUpdate: (trainingTimes: TrainingTime[]) => void;
+}
 
 const daysOfWeek = [
   "Montag",
@@ -31,16 +45,22 @@ const daysOfWeek = [
   "Sonntag",
 ];
 
-export function TrainingTimeForm({ trainingTimes, onUpdate }) {
-  const [newTime, setNewTime] = useState({
+export function TrainingTimeForm({
+  trainingTimes,
+  onUpdate,
+}: TrainingTimeFormProps) {
+  const [newTime, setNewTime] = useState<TrainingTime>({
+    id: "",
     day: "",
     startTime: "",
     endTime: "",
   });
 
   const handleAddTime = () => {
-    onUpdate([...trainingTimes, { ...newTime, id: Date.now().toString() }]);
-    setNewTime({ day: "", startTime: "", endTime: "" });
+    if (newTime.day && newTime.startTime && newTime.endTime) {
+      onUpdate([...trainingTimes, { ...newTime, id: Date.now().toString() }]);
+      setNewTime({ id: "", day: "", startTime: "", endTime: "" });
+    }
   };
 
   const handleRemoveTime = (id: string) => {

@@ -17,6 +17,7 @@ export async function sendMail(
   text: string,
   html: string
 ) {
+  console.info("sending mail");
   // send mail with defined transport object
   const info = await transporter.sendMail({
     from: "Codity Development <noreply@dev.codity.net>", // sender address

@@ -38,15 +38,21 @@ import {
 } from "@/components/ui/table";
 import { User } from "@prisma/client";
 
-export type Member = {
+export type Sport = {
   id: string;
   name: string;
-  email: string;
-  age: number;
-  sports: string[];
+  description: string;
+  groups: string[];
 };
 
-export function MembersDataTable({ data }: { data: User[] }) {
+export type Group = {
+  id: string;
+  name: string;
+  description: string;
+  groups: string[];
+};
+
+export function SportsDataTable({ data }: { data: Sport[] }) {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -86,40 +92,28 @@ export function MembersDataTable({ data }: { data: User[] }) {
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("name")}</div>
-      ),
+      cell: ({ row }) => <div className="">{row.getValue("name")}</div>,
     },
     {
-      accessorKey: "email",
-      header: "Email",
-      cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("email")}</div>
-      ),
-    },
-    {
-      accessorKey: "age",
-      header: "Alter",
-      cell: ({ row }) => <div>{row.getValue("age")}</div>,
-    },
-    {
-      accessorKey: "sports",
-      header: "Sportarten",
-      cell: ({ row }) => {
-        const sports = row.getValue("sports") as string[] | undefined; // Change from "groups" to "sports"
-
+      accessorKey: "description",
+      header: ({ column }) => {
         return (
-          <div>
-            {sports && sports.length > 0 ? sports.join(", ") : <div>Keine</div>}
-          </div>
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Beschreibung
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
         );
       },
+      cell: ({ row }) => <div className="">{row.getValue("description")}</div>,
     },
     {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const member = row.original;
+        const sport = row.original;
 
         return (
           <DropdownMenu>
@@ -132,7 +126,7 @@ export function MembersDataTable({ data }: { data: User[] }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => router.push(`/admin/members/${member.id}`)}
+                onClick={() => router.push(`/admin/sports/${sport.id}`)}
               >
                 Bearbeiten
               </DropdownMenuItem>

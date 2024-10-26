@@ -8,9 +8,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrainingTimeForm } from "./training-time-form";
 import { TrainingPlanForm } from "./training-plan-form";
+import { AgeGroup as PrismaAgeGroup } from "@prisma/client"; // Import AgeGroup type
 
-export function GroupForm({ group, onSave }) {
-  const [updatedGroup, setUpdatedGroup] = useState(group);
+interface TrainingTime {
+  day: string; // e.g., "Monday"
+  startTime: string; // e.g., "18:00"
+  endTime: string; // e.g., "19:00"
+}
+
+interface TrainingPlan {
+  id: string; // Add id for key usage
+  day: string; // e.g., "Monday"
+  description: string; // e.g., "Beginner Plan"
+}
+
+interface GroupFormProps {
+  group: PrismaAgeGroup; // Use AgeGroup type here
+  onSave: (group: AgeGroup) => void;
+}
+
+export function GroupForm({ group, onSave }: GroupFormProps) {
+  const [updatedGroup, setUpdatedGroup] = useState<AgeGroup>(group);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,6 +58,7 @@ export function GroupForm({ group, onSave }) {
                 name="name"
                 value={updatedGroup.name}
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -49,6 +68,7 @@ export function GroupForm({ group, onSave }) {
                 name="description"
                 value={updatedGroup.description}
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -65,7 +85,7 @@ export function GroupForm({ group, onSave }) {
         <TabsContent value="training-times">
           <TrainingTimeForm
             trainingTimes={updatedGroup.trainingTimes}
-            onUpdate={(newTrainingTimes) =>
+            onUpdate={(newTrainingTimes: TrainingTime[]) =>
               setUpdatedGroup({
                 ...updatedGroup,
                 trainingTimes: newTrainingTimes,
@@ -76,7 +96,7 @@ export function GroupForm({ group, onSave }) {
         <TabsContent value="training-plans">
           <TrainingPlanForm
             trainingPlans={updatedGroup.trainingPlans}
-            onUpdate={(newTrainingPlans) =>
+            onUpdate={(newTrainingPlans: TrainingPlan[]) =>
               setUpdatedGroup({
                 ...updatedGroup,
                 trainingPlans: newTrainingPlans,

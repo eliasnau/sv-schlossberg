@@ -40,7 +40,7 @@ const adminRoutes = [
   {
     icon: Users,
     label: "Mitglieder",
-    href: "/admin/analytics",
+    href: "/admin/members",
   },
   {
     icon: BarChart,
@@ -60,12 +60,7 @@ const adminRoutes = [
   {
     icon: FolderClosed,
     label: "Datein",
-    href: "/admin/seiten",
-  },
-  {
-    icon: BarChart,
-    label: "Personen",
-    href: "/admin/personen",
+    href: "/admin/files",
   },
 ];
 

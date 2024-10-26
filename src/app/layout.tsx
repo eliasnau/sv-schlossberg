@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Footer } from "@/components/universal/footer";
-import { Navbar } from "@/components/universal/navbar"; // import "@uploadthing/react/styles.css";
+ // import "@uploadthing/react/styles.css";
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
@@ -36,11 +35,7 @@ export default async function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <Toaster />
-          <div className="flex flex-col min-h-screen bg-[#f0f4f0]">
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </div>
+          {children}
         </body>
       </html>
     </SessionProvider>

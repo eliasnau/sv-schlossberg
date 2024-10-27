@@ -45,18 +45,33 @@ export default function Page() {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    startTransition(() => {
-      login(values).then((data) => {
-        if (data?.error) {
-          toast.error(data.error);
-        }
-        if (data?.success) {
-          toast.success(data.success);
-          form.reset({ email: "", password: "" });
-          window.location.href = "/";
-        }
-      });
-    });
+    toast.promise(
+      new Promise<void>((resolve, reject) => {
+        startTransition(() => {
+          login(values)
+            .then((data) => {
+              if (data?.error) {
+                toast.error(data.error);
+                reject(data.error);
+              } else if (data?.success) {
+                toast.success(data.success);
+                form.reset({ email: "", password: "" });
+                window.location.href = "/";
+                resolve();
+              }
+            })
+            .catch((err) => {
+              toast.error(err?.message || "Login failed");
+              reject(err.message);
+            });
+        });
+      }),
+      {
+        loading: "Logging in...",
+        success: "Logged in successfully!",
+        error: "Login failed",
+      }
+    );
   };
   return (
     <CardWrapper

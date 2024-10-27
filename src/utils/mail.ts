@@ -15,7 +15,9 @@ export async function passwordResetMail(
 
 export async function sendVerificationEmail(email: string, token: string) {
   const html = await verifyEmail(token);
-  await sendMail(email, "SvS Passwort Zurücksetzen", "", html);
+  await sendMail(email, "SvS Passwort Zurücksetzen", "", html).catch((e) => {
+    console.error(e);
+  });
 }
 
 export async function sendPasswordResetEmail(email: string, token: string) {

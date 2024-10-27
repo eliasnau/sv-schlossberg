@@ -4,7 +4,7 @@ import { env } from "./env";
 const transporter = nodemailer.createTransport({
   host: env.SMTP_HOST,
   port: env.SMTP_PORT,
-  secure: false, // true for port 465, false for other ports
+  secure: true, // true for port 465, false for other ports
   auth: {
     user: env.SMTP_USER,
     pass: env.SMTP_PASSWORD,
@@ -17,9 +17,10 @@ export async function sendMail(
   text: string,
   html: string
 ) {
+  console.info("sending mail");
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: "Codity Development <noreply@codity.dev>", // sender address
+    from: "Codity Development <noreply@dev.codity.net>", // sender address
     to: receivers, // list of receivers
     subject: subject, // Subject line
     text: text, // plain text body

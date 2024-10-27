@@ -12,8 +12,8 @@ import { useParams } from "next/navigation";
 // Mock data (this would typically come from an API call)
 const mockSport = {
   id: "1",
-  name: "Fußball",
-  description: "Fußball für alle Altersgruppen",
+  name: "Laden...",
+  description: "Laden...",
   image: "/placeholder.svg?height=200&width=200",
   groups: [
     {
@@ -32,8 +32,8 @@ const mockSport = {
     },
     {
       id: "2",
-      name: "Erwachsene",
-      description: "Ab 18 Jahren",
+      name: "Laden...",
+      description: "Laden...",
       image: "/placeholder.svg?height=200&width=200",
       trainingTimes: [
         { id: "3", day: "Dienstag", startTime: "19:00", endTime: "21:00" },
@@ -123,10 +123,6 @@ export default function EditSportPage() {
           <Competitions sport={sport} setSport={setSport} />
         </TabsContent>
       </Tabs>
-
-      <Button type="submit" onClick={handleSubmit}>
-        Alle Änderungen speichern
-      </Button>
     </div>
   );
 }

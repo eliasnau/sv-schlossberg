@@ -87,9 +87,6 @@ export function GroupForm({ group, onSave, setGroup }: GroupFormProps) {
           /> */}
         </TabsContent>
       </Tabs>
-      <Button type="submit" className="mt-4">
-        Speichern
-      </Button>
     </form>
   );
 }

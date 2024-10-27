@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Define types for the props
 interface Member {
@@ -92,13 +93,15 @@ export function MemberEditForm({
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center space-x-4">
-                <Image
-                  src={editedMember.image}
-                  alt={editedMember.name}
-                  width={100}
-                  height={100}
-                  className="rounded-full"
-                />
+                <Skeleton className="rounded-full">
+                  <Image
+                    src={editedMember.image}
+                    alt={editedMember.name}
+                    width={100}
+                    height={100}
+                    className="rounded-full"
+                  />
+                </Skeleton>
                 <div>
                   <Label htmlFor="image">Profilbild</Label>
                   <Input id="image" name="image" type="file" />

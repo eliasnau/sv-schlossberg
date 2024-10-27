@@ -90,13 +90,27 @@ export function GroupItem({ group, onUpdate, onRemove }: GroupItemProps) {
           </>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? <Save /> : <Edit2 />}
-        </Button>
-        <Button onClick={() => onRemove(groupItem.id)} color="danger">
-          <Trash2 />
-        </Button>
+      <CardFooter className="flex space-x-2">
+        {isEditing ? (
+          <>
+            <Button onClick={() => setIsEditing(!isEditing)}>
+              <Save /> Speichern
+            </Button>
+            <Button
+              onClick={() => onRemove(groupItem.id)}
+              color="danger"
+              variant={"destructive"}
+            >
+              <Trash2 /> Löschen
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => setIsEditing(!isEditing)}>
+              <Edit2 /> Bearbeiten
+            </Button>
+          </>
+        )}
       </CardFooter>
     </Card>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SportDetails } from "./_components/edit-sport";
 import { AgeGroups } from "./_components/age-groups";
@@ -94,12 +93,12 @@ export default function EditSportPage() {
     fetchSports();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send the updated sport data to your API
-    console.log("Updated sport:", sport);
-    // Then redirect back to the sports list or show a success message
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // Here you would typically send the updated sport data to your API
+  //   console.log("Updated sport:", sport);
+  //   // Then redirect back to the sports list or show a success message
+  // };
 
   return (
     <div className="container mx-auto px-4 py-8">

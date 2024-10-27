@@ -1,134 +1,82 @@
-"use client";
-
-import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-/* eslint-disable */
+import { useState } from "react";
 
-// Define the TrainingTime interface
 interface TrainingTime {
-  id: string; // Unique identifier for the training time
-  day: string; // Day of the week
-  startTime: string; // Start time in HH:MM format
-  endTime: string; // End time in HH:MM format
+  id: string; // Make sure you have an ID for each training time
+  day: string;
+  startTime: string;
+  endTime: string;
 }
 
-// Define the props for TrainingTimeForm
 interface TrainingTimeFormProps {
-  trainingTimes: TrainingTime[];
-  onUpdate: (trainingTimes: TrainingTime[]) => void;
+  group: any; // Use the appropriate type for your group
+  setGroup: (group: any) => void; // Update the type as needed
 }
 
-const daysOfWeek = [
-  "Montag",
-  "Dienstag",
-  "Mittwoch",
-  "Donnerstag",
-  "Freitag",
-  "Samstag",
-  "Sonntag",
-];
-
-export function TrainingTimeForm({
-  trainingTimes,
-  onUpdate,
-}: TrainingTimeFormProps) {
-  const [newTime, setNewTime] = useState<TrainingTime>({
-    id: "",
+export function TrainingTimeForm({ group, setGroup }: TrainingTimeFormProps) {
+  const [newTrainingTime, setNewTrainingTime] = useState<TrainingTime>({
+    id: "", // Add an ID for the new training time
     day: "",
     startTime: "",
     endTime: "",
   });
 
-  const handleAddTime = () => {
-    if (newTime.day && newTime.startTime && newTime.endTime) {
-      onUpdate([...trainingTimes, { ...newTime, id: Date.now().toString() }]);
-      setNewTime({ id: "", day: "", startTime: "", endTime: "" });
+  const handleAddTrainingTime = () => {
+    if (
+      !newTrainingTime.day ||
+      !newTrainingTime.startTime ||
+      !newTrainingTime.endTime
+    ) {
+      return; // Do not proceed if any field is empty
     }
+
+    // Update the group with the new training time
+    const updatedTrainingTimes = [...group.trainingTimes, newTrainingTime];
+
+    setGroup({ ...group, trainingTimes: updatedTrainingTimes }); // Update the group state
+
+    // Reset the new training time
+    setNewTrainingTime({ id: "", day: "", startTime: "", endTime: "" });
   };
 
-  const handleRemoveTime = (id: string) => {
-    onUpdate(trainingTimes.filter((time) => time.id !== id));
+  const handleEdit = (time: TrainingTime) => {
+    setNewTrainingTime(time); // Set the time for editing (optional, based on your needs)
   };
 
   return (
     <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tag</TableHead>
-            <TableHead>Startzeit</TableHead>
-            <TableHead>Endzeit</TableHead>
-            <TableHead>Aktion</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {trainingTimes.map((time) => (
-            <TableRow key={time.id}>
-              <TableCell>{time.day}</TableCell>
-              <TableCell>{time.startTime}</TableCell>
-              <TableCell>{time.endTime}</TableCell>
-              <TableCell>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleRemoveTime(time.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="grid grid-cols-4 gap-2 mt-4">
-        <Select
-          value={newTime.day}
-          onValueChange={(value) => setNewTime({ ...newTime, day: value })}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Tag" />
-          </SelectTrigger>
-          <SelectContent>
-            {daysOfWeek.map((day) => (
-              <SelectItem key={day} value={day}>
-                {day}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Input
-          type="time"
-          value={newTime.startTime}
-          onChange={(e) =>
-            setNewTime({ ...newTime, startTime: e.target.value })
-          }
-        />
-        <Input
-          type="time"
-          value={newTime.endTime}
-          onChange={(e) => setNewTime({ ...newTime, endTime: e.target.value })}
-        />
-        <Button onClick={handleAddTime}>
-          <Plus className="h-4 w-4 mr-2" /> Hinzufügen
-        </Button>
-      </div>
+      <ul>
+        {group.trainingTimes.map((time: TrainingTime) => (
+          <li key={time.id}>
+            {time.day}: {time.startTime} - {time.endTime}
+            <Button onClick={() => handleEdit(time)}>Edit</Button>
+          </li>
+        ))}
+      </ul>
+      <Input
+        placeholder="Day"
+        value={newTrainingTime.day}
+        onChange={(e) =>
+          setNewTrainingTime({ ...newTrainingTime, day: e.target.value })
+        }
+      />
+      <Input
+        placeholder="Start Time"
+        value={newTrainingTime.startTime}
+        onChange={(e) =>
+          setNewTrainingTime({ ...newTrainingTime, startTime: e.target.value })
+        }
+      />
+      <Input
+        placeholder="End Time"
+        value={newTrainingTime.endTime}
+        onChange={(e) =>
+          setNewTrainingTime({ ...newTrainingTime, endTime: e.target.value })
+        }
+      />
+      <Button onClick={handleAddTrainingTime}>Add Training Time</Button>
     </div>
   );
 }

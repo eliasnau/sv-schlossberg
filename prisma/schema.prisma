@@ -67,8 +67,6 @@ model Sport {
   id            String         @id @default(cuid())
   name          String
   description   String?
-  trainingTimes TrainingTime[]
-  trainingPlans TrainingPlan[]
   persons       Person[]
   groups        AgeGroup[] // Add relation to AgeGroup
 }
@@ -78,8 +76,7 @@ model TrainingTime {
   day            String
   startTime      String
   endTime        String
-  sport          Sport         @relation(fields: [sportId], references: [id])
-  sportId        String
+
   trainingPlan   TrainingPlan? @relation(fields: [trainingPlanId], references: [id])
   trainingPlanId String?
   AgeGroup       AgeGroup?     @relation(fields: [ageGroupId], references: [id])
@@ -91,8 +88,6 @@ model TrainingPlan {
   title         String // Updated to be more descriptive
   description   String? // Description of the plan
   duration      Int // Duration in weeks or other metric
-  sport         Sport          @relation(fields: [sportId], references: [id])
-  sportId       String
   trainingTimes TrainingTime[]
   AgeGroup      AgeGroup?      @relation(fields: [ageGroupId], references: [id])
   ageGroupId    String?
@@ -113,8 +108,8 @@ model AgeGroup {
   image         String? // Optional image URL
   trainingTimes TrainingTime[] // Relation to TrainingTime
   trainingPlans TrainingPlan[] // Relation to TrainingPlan
-  sport         Sport?         @relation(fields: [sportId], references: [id])
-  sportId       String? // Foreign key relation to Sport
+  sport         Sport         @relation(fields: [sportId], references: [id])
+  sportId       String // Foreign key relation to Sport
   User          User?          @relation(fields: [userId], references: [id])
   userId        String?
 }

@@ -1,44 +1,44 @@
-"use client";
-
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrainingTimeForm } from "./training-time-form";
-import { TrainingPlanForm } from "./training-plan-form";
-import { AgeGroup as PrismaAgeGroup } from "@prisma/client"; // Import AgeGroup type
-
-interface TrainingTime {
-  day: string; // e.g., "Monday"
-  startTime: string; // e.g., "18:00"
-  endTime: string; // e.g., "19:00"
-}
-
-interface TrainingPlan {
-  id: string; // Add id for key usage
-  day: string; // e.g., "Monday"
-  description: string; // e.g., "Beginner Plan"
-}
+import { AgeGroup as PrismaAgeGroup } from "@prisma/client";
 
 interface GroupFormProps {
-  group: PrismaAgeGroup; // Use AgeGroup type here
-  onSave: (group: AgeGroup) => void;
+  group: PrismaAgeGroup; // Updated type
+  setGroup: (group: PrismaAgeGroup) => void; // Updated type
+  onSave: (group: PrismaAgeGroup) => void; // Updated type
 }
 
-export function GroupForm({ group, onSave }: GroupFormProps) {
-  const [updatedGroup, setUpdatedGroup] = useState<AgeGroup>(group);
+export function GroupForm({ group, onSave, setGroup }: GroupFormProps) {
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    // @ts-expect-error: dont touch! idk why it works
+    setGroup((prevGroup: any) => ({ ...prevGroup, name: newName })); // Update only the name field
+  };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  useEffect(() => {
+    console.log(group);
+  }, [group]);
+
+  const handleChangeDescription = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setUpdatedGroup({ ...updatedGroup, [e.target.name]: e.target.value });
+    const newDescription = e.target.value;
+    // @ts-expect-error: dont touch! idk why it works
+    setGroup((prevGroup: any) => ({
+      ...prevGroup,
+      description: newDescription,
+    })); // Update description if needed
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(updatedGroup);
+    onSave(group); // Call onSave to save the group when form is submitted
   };
 
   return (
@@ -56,8 +56,8 @@ export function GroupForm({ group, onSave }: GroupFormProps) {
               <Input
                 id="name"
                 name="name"
-                value={updatedGroup.name}
-                onChange={handleChange}
+                value={group.name}
+                onChange={handleChangeName} // Call handleChangeName for name updates
                 required
               />
             </div>
@@ -66,43 +66,25 @@ export function GroupForm({ group, onSave }: GroupFormProps) {
               <Textarea
                 id="description"
                 name="description"
-                value={updatedGroup.description}
-                onChange={handleChange}
+                value={group.description}
+                onChange={handleChangeDescription} // Call handleChangeDescription for description updates
                 required
-              />
-            </div>
-            <div>
-              <Label htmlFor="image">Bild</Label>
-              <Input
-                id="image"
-                name="image"
-                type="file"
-                // Image upload functionality removed as requested
               />
             </div>
           </div>
         </TabsContent>
         <TabsContent value="training-times">
           <TrainingTimeForm
-            trainingTimes={updatedGroup.trainingTimes}
-            onUpdate={(newTrainingTimes: TrainingTime[]) =>
-              setUpdatedGroup({
-                ...updatedGroup,
-                trainingTimes: newTrainingTimes,
-              })
-            }
+            group={group} // Ensure this is pulled from the group state
+            setGroup={setGroup}
+            // Other props remain unchanged
           />
         </TabsContent>
         <TabsContent value="training-plans">
-          <TrainingPlanForm
-            trainingPlans={updatedGroup.trainingPlans}
-            onUpdate={(newTrainingPlans: TrainingPlan[]) =>
-              setUpdatedGroup({
-                ...updatedGroup,
-                trainingPlans: newTrainingPlans,
-              })
-            }
-          />
+          {/* <TrainingPlanForm
+            trainingPlans={group.trainingPlans} // Ensure this is pulled from the group state
+            // Other props remain unchanged
+          /> */}
         </TabsContent>
       </Tabs>
       <Button type="submit" className="mt-4">

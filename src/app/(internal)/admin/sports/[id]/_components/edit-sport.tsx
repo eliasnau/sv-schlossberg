@@ -22,7 +22,7 @@ interface Sport {
 
 interface SportDetailsProps {
   sport: Sport;
-  setSport: (sport: Sport) => void;
+  setSport: any;
 }
 
 export function SportDetails({ sport, setSport }: SportDetailsProps) {

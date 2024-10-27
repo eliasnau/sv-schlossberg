@@ -53,52 +53,48 @@ const mockGroups: Group[] = [
   { id: "3", name: "Jugend Basketball" },
 ];
 
-export default function EditMemberPage({ params }: { params: { id: string } }) {
+export default function EditMemberPage() {
   const [member, setMember] = useState<Member | null>(null);
-  const [groups, setGroups] = useState<Group[]>();
+  const [groups, setGroups] = useState<Group[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
 
   useEffect(() => {
-    const fetchMembers = async () => {
-      await axios
-        .get(`/api/admin/members/${params.id}`)
-        .then((res) => {
-          const data = res.data;
-          console.log(data);
-          if (!data || !data.member) return <p>Error</p>;
-          setMember(data.member);
-        })
-        .catch((error) => {
-          console.error("Error fetching members:", error);
-          return <p>Error</p>;
-        });
+    const fetchMember = async () => {
+      try {
+        const res = await axios.get(`/api/admin/members/${params.id}`);
+        const data = res.data;
+        if (!data || !data.member) throw new Error("Member not found");
+        setMember(data.member);
+      } catch (error) {
+        console.error("Error fetching member:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    fetchMembers();
-    const fetchSports = async () => {
-      await axios
-        .get(`/api/admin/groups`)
-        .then((res) => {
-          const data = res.data;
-          console.log(data);
-          if (!data || !data.groups) return <p>Error</p>;
-          setGroups(data.groups);
-        })
-        .catch((error) => {
-          console.error("Error fetching members:", error);
-          return <p>Error</p>;
-        });
+
+    const fetchGroups = async () => {
+      try {
+        const res = await axios.get(`/api/admin/groups`);
+        const data = res.data;
+        if (!data || !data.groups) throw new Error("Groups not found");
+        setGroups(data.groups);
+      } catch (error) {
+        console.error("Error fetching groups:", error);
+      }
     };
-    fetchSports();
-    setIsLoading(false);
-  }, []);
+
+    fetchMember();
+    fetchGroups();
+  }, [params.id]);
 
   const handleSave = async (updatedMember: Member) => {
-    // Here you would typically send the updated member data to your API
     console.log("Saving updated member:", updatedMember);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    // After successful save, redirect to the members list
-    //router.push("/admin/members");
+    // Redirect to the members list
+    router.push("/admin/members");
   };
 
   if (isLoading) {
@@ -113,7 +109,7 @@ export default function EditMemberPage({ params }: { params: { id: string } }) {
     <div className="container mx-auto px-4 py-8">
       <Button
         variant="ghost"
-        onClick={() => {}} //router.push("/admin/members")}
+        onClick={() => router.push("/admin/members")} // Redirecting to the members list
         className="mb-4"
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Zurück zur Mitgliederliste

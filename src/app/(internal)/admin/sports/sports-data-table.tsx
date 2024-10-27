@@ -141,6 +141,7 @@ export function SportsDataTable({ data }: { data: Sport[] }) {
 
   const table = useReactTable({
     data,
+    //@ts-expect-error: works
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

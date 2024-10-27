@@ -5,7 +5,12 @@ export async function GET() {
   try {
     const sports = await db.sport.findMany({
       include: {
-        groups: true,
+        groups: {
+          include: {
+            trainingTimes: true,
+            trainingPlans: true,
+          },
+        },
       },
     });
     return NextResponse.json({ sports }, { status: 200 });

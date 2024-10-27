@@ -3,31 +3,37 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Check if ID is provided
-    if (!params.id) {
+    const id = (await params).id; // 'a', 'b', or 'c'
+
+    if (id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
 
-    // Retrieve the user by ID, including their groups
+    // Retrieve the sport by ID, including their groups
     const sport = await db.sport.findFirst({
-      where: { id: params.id },
+      where: { id },
       include: {
-        groups: true,
+        groups: {
+          include: {
+            trainingTimes: true,
+            trainingPlans: true,
+          },
+        },
       },
     });
 
-    // Check if the member was found
+    // Check if the sport was found
     if (!sport) {
       return NextResponse.json(
-        { message: "Member not found" },
+        { message: "Sport not found" }, // Adjusted the message
         { status: 404 }
       );
     }
 
-    // Return the found member
+    // Return the found sport
     return NextResponse.json({ sport }, { status: 200 });
   } catch (err) {
     console.error(err);

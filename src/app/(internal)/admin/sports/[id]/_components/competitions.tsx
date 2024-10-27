@@ -37,7 +37,7 @@ interface Sport {
 
 interface CompetitionsProps {
   sport: Sport;
-  setSport: (sport: Sport) => void;
+  setSport: any;
 }
 
 export function Competitions({ sport, setSport }: CompetitionsProps) {

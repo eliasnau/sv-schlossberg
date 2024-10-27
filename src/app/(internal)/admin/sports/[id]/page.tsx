@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SportDetails } from "./_components/edit-sport";
 import { AgeGroups } from "./_components/age-groups";
 import { Competitions } from "./_components/competitions";
+import axios from "axios";
+import { useParams } from "next/navigation";
 
 // Mock data (this would typically come from an API call)
 const mockSport = {
@@ -73,11 +75,23 @@ const mockSport = {
 
 export default function EditSportPage() {
   const [sport, setSport] = useState(mockSport);
+  const params = useParams<{ id: string }>();
 
   useEffect(() => {
-    // Fetch sport data based on id
-    // For now, we're using mock data
-    setSport(mockSport);
+    const fetchSports = async () => {
+      try {
+        const res = await axios.get(`/api/admin/sports/${params.id}`);
+        const data = res.data;
+        console.log(data);
+        if (!data || !data.sport) return; // Ensure data is valid
+        console.log(data);
+        setSport(data.sport);
+      } catch (error) {
+        console.error("Error fetching sports:", error);
+      }
+    };
+
+    fetchSports();
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {

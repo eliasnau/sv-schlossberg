@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,22 +12,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-/* eslint-disable */
 
-// Define the TrainingPlan interface
 interface TrainingPlan {
-  id: string; // Unique identifier for each plan
-  date: string; // Date of the training
-  description: string; // Description of the training
+  id: string;
+  date: string;
+  description: string;
 }
 
-// Define the props for TrainingPlanForm
 interface TrainingPlanFormProps {
+  groupId: string; // Pass groupId as a prop
   trainingPlans: TrainingPlan[];
   onUpdate: (trainingPlans: TrainingPlan[]) => void;
 }
 
 export function TrainingPlanForm({
+  groupId,
   trainingPlans,
   onUpdate,
 }: TrainingPlanFormProps) {
@@ -37,16 +36,36 @@ export function TrainingPlanForm({
     id: "",
   });
 
-  const handleAddPlan = () => {
-    const newTrainingPlan: TrainingPlan = {
-      ...newPlan,
-      id: Date.now().toString(),
+  useEffect(() => {
+    const fetchTrainingPlans = async () => {
+      const response = await fetch(
+        `/api/admin/sports/groups/${groupId}/training-plans`
+      );
+      const data = await response.json();
+      onUpdate(data); // Initialize state with fetched data
     };
-    onUpdate([...trainingPlans, newTrainingPlan]);
+
+    fetchTrainingPlans();
+  }, [groupId, onUpdate]);
+
+  const handleAddPlan = async () => {
+    const response = await fetch(
+      `/api/admin/sports/groups/${groupId}/training-plans`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPlan),
+      }
+    );
+    const addedPlan = await response.json();
+    onUpdate([...trainingPlans, { ...addedPlan, id: Date.now().toString() }]);
     setNewPlan({ date: "", description: "", id: "" });
   };
 
-  const handleRemovePlan = (id: string) => {
+  const handleRemovePlan = async (id: string) => {
+    await fetch(`/api/admin/sports/groups/${groupId}/training-plans/${id}`, {
+      method: "DELETE",
+    });
     onUpdate(trainingPlans.filter((plan) => plan.id !== id));
   };
 

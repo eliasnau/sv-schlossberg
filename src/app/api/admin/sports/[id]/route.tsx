@@ -8,7 +8,7 @@ export async function GET(
   try {
     const id = (await params).id; // 'a', 'b', or 'c'
 
-    if (id) {
+    if (!id) {
       return NextResponse.json({ message: "ID is missing" }, { status: 400 });
     }
 

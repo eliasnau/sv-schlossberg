@@ -93,12 +93,12 @@ export default function EditSportPage() {
     fetchSports();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send the updated sport data to your API
-    console.log("Updated sport:", sport);
-    // Then redirect back to the sports list or show a success message
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // Here you would typically send the updated sport data to your API
+  //   console.log("Updated sport:", sport);
+  //   // Then redirect back to the sports list or show a success message
+  // };
 
   return (
     <div className="container mx-auto px-4 py-8">

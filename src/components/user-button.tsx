@@ -12,11 +12,11 @@ import {
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { signOut } from "next-auth/react";
 import {
-  Book,
   CreditCard,
   LayoutDashboard,
   LogOut,
   Settings,
+  Trophy,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,17 +25,17 @@ import { Button } from "@/components/ui/button";
 export const UserButton = () => {
   const userButtonItems = [
     {
-      label: "Dashboard",
+      label: "Startseite",
       href: "/dashboard",
       icon: LayoutDashboard,
     },
     {
-      label: "Docs",
-      href: "/docs",
-      icon: Book,
+      label: "Wettkämpfe",
+      href: "/competitions",
+      icon: Trophy,
     },
     {
-      label: "Billing",
+      label: "Mitgliedschaft",
       href: "/payments",
       icon: CreditCard,
     },
@@ -45,13 +45,13 @@ export const UserButton = () => {
       icon: Settings,
     },
   ];
-  // Random gradient colors for Avatar
+  //
 
   const router = useRouter();
   const session = useCurrentUser();
 
   const onClick = () => {
-    router.push("/register");
+    router.push("/login");
   };
   const Logout = () => {
     signOut();
@@ -61,22 +61,40 @@ export const UserButton = () => {
   return (
     <>
       {!session ? (
-        <div>
-          <Link
-            href="/register"
-            className="flex md:hidden items-center justify-center rounded-lg cursor-pointer transition duration-300 hover:bg-primary/10 px-2 py-2"
-          >
-            <LogOut className="h-5.5 w-5" />
-          </Link>
+        <>
+          <div>
+            <Link
+              href="/login"
+              className="flex md:hidden items-center justify-center rounded-lg cursor-pointer transition duration-300 hover:bg-primary/10 px-2 py-2"
+            >
+              <LogOut className="h-5.5 w-5" />
+            </Link>
 
-          <Button
-            type="submit"
-            onClick={onClick}
-            className="px-5 rounded-md hidden md:flex"
-          >
-            Get Started
-          </Button>
-        </div>
+            <Button
+              type="submit"
+              onClick={onClick}
+              className="px-5 rounded-md hidden md:flex"
+            >
+              Probetermin
+            </Button>
+          </div>
+          <div>
+            <Link
+              href="/probetermin"
+              className="flex md:hidden items-center justify-center rounded-lg cursor-pointer transition duration-300 hover:bg-primary/10 px-2 py-2"
+            >
+              <LogOut className="h-5.5 w-5" />
+            </Link>
+
+            <Button
+              type="submit"
+              onClick={onClick}
+              className="px-5 rounded-md hidden md:flex"
+            >
+              Login
+            </Button>
+          </div>
+        </>
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

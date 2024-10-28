@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
@@ -41,5 +42,35 @@ export async function GET(
       { error: "Internal Server Error" },
       { status: 500 }
     );
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = await auth();
+
+    if (!(user?.user.role === "ADMIN") || !user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    const { id } = await params;
+
+    const values = await req.json();
+
+    const sport = await db.sport.update({
+      where: {
+        id: id,
+      },
+      data: {
+        ...values,
+      },
+    });
+
+    return NextResponse.json(sport);
+  } catch (error) {
+    console.log("[COURSE_ID]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

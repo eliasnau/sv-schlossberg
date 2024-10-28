@@ -67,6 +67,7 @@ model Sport {
   id            String         @id @default(cuid())
   name          String
   description   String?
+  href          String?
   persons       Person[]
   groups        AgeGroup[] // Add relation to AgeGroup
 }

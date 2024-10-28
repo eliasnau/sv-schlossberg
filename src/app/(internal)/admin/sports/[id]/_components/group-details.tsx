@@ -22,18 +22,18 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 /* eslint-disable */
 
-interface Sport {
+interface Group {
   name: string;
   description: string;
   image?: string; // Optional image URL
 }
 
-interface SportDetailsProps {
-  initialData: Sport;
-  sportId: string;
+interface GroupDetailsProps {
+  initialData: Group;
+  groupId: string;
 }
 
-export function SportDetails({ initialData, sportId }: SportDetailsProps) {
+export function GroupDetails({ initialData, groupId }: GroupDetailsProps) {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
@@ -64,7 +64,7 @@ export function SportDetails({ initialData, sportId }: SportDetailsProps) {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/admin/sports/${sportId}`, values);
+      await axios.patch(`/api/admin/sports/groups/${groupId}`, values);
       toast.success("Erfolg!");
       toggleEdit();
       router.refresh();
@@ -89,7 +89,7 @@ export function SportDetails({ initialData, sportId }: SportDetailsProps) {
   return (
     <Card className="mb-8">
       <CardHeader>
-        <CardTitle>Sportart Details</CardTitle>
+        <CardTitle>Gruppen Details</CardTitle>
       </CardHeader>
       <CardContent>
         {isEditing ? (

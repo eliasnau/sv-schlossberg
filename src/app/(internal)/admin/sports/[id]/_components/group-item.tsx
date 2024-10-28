@@ -1,117 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Edit2, Save, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { GroupForm } from "./group-form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AgeGroup as PrismaAgeGroup } from "@prisma/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GroupDetails } from "./group-details";
+import { GroupTime } from "./group-time";
 
 interface GroupItemProps {
   group: PrismaAgeGroup;
-  onUpdate: (updatedGroup: PrismaAgeGroup) => void;
-  onRemove: (id: string) => void;
 }
 
-export function GroupItem({ group, onUpdate, onRemove }: GroupItemProps) {
-  const [groupItem, setGroupItem] = useState<PrismaAgeGroup>(group);
-  const [isEditing, setIsEditing] = useState(false);
-
-  // Effect to update the API whenever groupItem changes
-  useEffect(() => {
-    const updateGroup = async () => {
-      try {
-        console.log(JSON.stringify(groupItem));
-        const response = await fetch(
-          `/api/admin/sports/groups/${groupItem.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(groupItem),
-          }
-        );
-
-        if (response.ok) {
-          onUpdate(groupItem);
-        } else {
-          console.error("Failed to update group");
-        }
-      } catch (error) {
-        console.error("Error updating group:", error);
-      }
-    };
-
-    // Update the group only if it's not in edit mode
-    if (!isEditing) {
-      setIsEditing(false);
-      updateGroup();
-    }
-  }, [groupItem, isEditing]);
-
-  const handleSave = (updatedGroup: PrismaAgeGroup) => {
-    setGroupItem(updatedGroup);
-    setIsEditing(false);
-  };
-
+export function GroupItem({ group }: GroupItemProps) {
   return (
-    <Card key={groupItem.id} className="mb-4">
+    <Card className="mb-4">
       <CardHeader>
-        <CardTitle>{groupItem.name}</CardTitle>
+        <CardTitle>{group.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        {isEditing ? (
-          <GroupForm
-            group={groupItem}
-            onSave={handleSave}
-            setGroup={setGroupItem}
-          />
-        ) : (
-          <>
-            <p>
-              <strong>Beschreibung:</strong> {groupItem.description}
+        <>
+          <Tabs defaultValue="details">
+            <TabsList>
+              <TabsTrigger value="details">Details</TabsTrigger>
+              <TabsTrigger value="training-times">Trainingszeiten</TabsTrigger>
+              <TabsTrigger value="training-plans">Trainingspläne</TabsTrigger>
+            </TabsList>
+            <TabsContent value="details">
+              <GroupDetails initialData={group as any} groupId={group.id} />
+            </TabsContent>
+            <TabsContent value="training-times">
+              <GroupTime initialData={group as any} groupId={group.id} />
+            </TabsContent>
+          </Tabs>
+          {/* <p>
+              <strong>Beschreibung:</strong> {group.description}
             </p>
-            {groupItem.image && (
+            {group.image && (
               <Image
-                src={groupItem.image}
-                alt={groupItem.name}
+                src={group.image}
+                alt={group.name}
                 width={50}
                 height={50}
               />
-            )}
-          </>
-        )}
+            )} */}
+        </>
       </CardContent>
-      <CardFooter className="flex space-x-2">
+      {/* <CardFooter className="flex space-x-2">
         {isEditing ? (
-          <>
-            <Button onClick={() => setIsEditing(!isEditing)}>
-              <Save /> Speichern
-            </Button>
-            <Button
-              onClick={() => onRemove(groupItem.id)}
-              color="danger"
-              variant={"destructive"}
-            >
-              <Trash2 /> Löschen
-            </Button>
-          </>
+          <></>
         ) : (
-          <>
-            <Button onClick={() => setIsEditing(!isEditing)}>
-              <Edit2 /> Bearbeiten
-            </Button>
-          </>
+          <Button onClick={() => setIsEditing(!isEditing)}>
+            <Edit2 /> Bearbeiten
+          </Button>
         )}
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

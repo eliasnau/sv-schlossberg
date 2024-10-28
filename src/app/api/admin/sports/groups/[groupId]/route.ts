@@ -1,4 +1,6 @@
+import { auth } from "@/auth";
 import { db } from "@/lib/db"; // Import the Prisma client
+import { NextResponse } from "next/server";
 
 // GET all age groups
 export async function GET() {
@@ -88,6 +90,36 @@ export async function PUT(request: Request) {
   } catch (error) {
     console.error("Error updating age group:", error);
     return new Response("Error updating age group", { status: 500 });
+  }
+}
+
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ groupId: string }> }
+) {
+  try {
+    const user = await auth();
+
+    if (!(user?.user.role === "ADMIN") || !user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    const { groupId } = await params;
+
+    const values = await req.json();
+
+    const group = await db.ageGroup.update({
+      where: {
+        id: groupId,
+      },
+      data: {
+        ...values,
+      },
+    });
+
+    return NextResponse.json(group);
+  } catch (error) {
+    console.log("[idk]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 

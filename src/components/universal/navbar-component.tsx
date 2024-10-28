@@ -43,7 +43,7 @@ export function ClientNavbar({ sports }: { sports: Sport[] }) {
 
   return (
     <header className="bg-[#1a5f1a] text-white shadow-md relative">
-      <nav className="container mx-auto px-4 py-4 flex items-center">
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold flex items-center mr-auto">
           <Image
             src="/img/logo2.jpg"
@@ -54,49 +54,55 @@ export function ClientNavbar({ sports }: { sports: Sport[] }) {
           />
           SV Schloßberg
         </Link>
-
-        <div className="hidden lg:block">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Sportarten</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {sports ? (
-                      sports.map((sport) => (
-                        <ListItem
-                          key={sport.id}
-                          title={sport.name}
-                          href={`/sport/${sport.name.toLowerCase()}`}
-                        >
-                          {sport.description || "Beschreibung fehlt."}
-                        </ListItem>
-                      ))
-                    ) : (
-                      <ListItem key={0} title="Keine Sportarten erstellt" />
-                    )}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/verein" className={navigationMenuTriggerStyle()}>
-                  Verein
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/kontakt" className={navigationMenuTriggerStyle()}>
-                  Kontakt
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/docs" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Sponsoren
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+        <div className="flex-grow flex justify-center">
+          <div className="hidden lg:block">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Sportarten</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      {sports ? (
+                        sports.map((sport) => (
+                          <ListItem
+                            key={sport.id}
+                            title={sport.name}
+                            href={`/sport/${sport.name.toLowerCase()}`}
+                          >
+                            {sport.description || "Beschreibung fehlt."}
+                          </ListItem>
+                        ))
+                      ) : (
+                        <ListItem key={0} title="Keine Sportarten erstellt" />
+                      )}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/verein" className={navigationMenuTriggerStyle()}>
+                    Verein
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link
+                    href="/kontakt"
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    Kontakt
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/docs" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Sponsoren
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
         </div>
 
         <div className="hidden lg:flex lg:space-x-4 ml-8">
